@@ -2,14 +2,19 @@
 import redis
 import simplejson
 import jieba
+import logging
+jieba.default_logger.setLevel(logging.INFO)
+from pypinyin import pinyin
+import pypinyin
 
 class Autocomplete (object):
   """
   autocomplete.
   """
 
-  def __init__ (self, scope, redisaddr="localhost", limits=5, cached=True):
-    self.r = redis.Redis (redisaddr)
+  def __init__ (self, scope, redisaddr="localhost", port=6379,
+                db=0, limits=5, cached=True):
+    self.r = redis.Redis (redisaddr, port=port, db=db)
     self.scope = scope
     self.cached=cached
     self.limits = limits
@@ -70,9 +75,15 @@ class Autocomplete (object):
     tokens = jieba.cut(term)
     for token in tokens:
       for i in xrange (1,len(token)+1):
-        prefixs.append(token[:i])
+        t = token[:i]
+        prefixs.append(t)
+        prefixs.append(''.join(
+            [i[0] for i in pinyin(t, style=pypinyin.INITIALS)]).lower())
+        prefixs.append(''.join(
+            [i[0] for i in pinyin(t, style=pypinyin.NORMAL)]).lower())
+        prefixs.append(t)
 
-    return prefixs
+    return set(prefixs)
 
   def normalize (self,prefix):
     """
