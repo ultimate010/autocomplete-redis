@@ -72,7 +72,7 @@ class Autocomplete (object):
 
     # Prefixs for term
     prefixs=[]
-    tokens = jieba.cut(term)
+    tokens = self.normalize(term)
     for token in tokens:
       for i in xrange (1,len(token)+1):
         t = token[:i]
@@ -83,13 +83,14 @@ class Autocomplete (object):
             [i[0] for i in pinyin(t, style=pypinyin.NORMAL)]).lower())
         prefixs.append(t)
 
-    return set(prefixs)
+    return list(set(prefixs))
 
   def normalize (self,prefix):
     """
     Normalize the search string.
     """
-    return [token for token in jieba.cut(prefix.lower())]
+    return list(set([token for token
+                     in jieba.cut(prefix.lower()) if token != " "]))
 
   def search_query (self,prefix):
     search_strings = self.normalize (prefix)
