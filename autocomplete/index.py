@@ -72,16 +72,21 @@ class Autocomplete (object):
 
     # Prefixs for term
     prefixs=[]
+    for i in xrange(1, len(term) + 1):
+      word = term[:i]
+      prefixs.append(word)
+      prefixs.append(''.join([i[0] for i in pinyin(word, style=pypinyin.INITIALS)]).lower())
+      prefixs.append(''.join([i[0] for i in pinyin(word, style=pypinyin.NORMAL)]).lower())
+      prefixs.append(word)
+
     tokens = self.normalize(term)
     for token in tokens:
       for i in xrange (1,len(token)+1):
-        t = token[:i]
-        prefixs.append(t)
-        prefixs.append(''.join(
-            [i[0] for i in pinyin(t, style=pypinyin.INITIALS)]).lower())
-        prefixs.append(''.join(
-            [i[0] for i in pinyin(t, style=pypinyin.NORMAL)]).lower())
-        prefixs.append(t)
+        word = token[:i]
+        prefixs.append(word)
+        prefixs.append(''.join([i[0] for i in pinyin(word, style=pypinyin.INITIALS)]).lower())
+        prefixs.append(''.join([i[0] for i in pinyin(word, style=pypinyin.NORMAL)]).lower())
+        prefixs.append(word)
 
     return list(set(prefixs))
 
