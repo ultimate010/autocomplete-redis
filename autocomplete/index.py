@@ -3,7 +3,6 @@ import redis
 import simplejson
 import jieba
 import logging
-jieba.default_logger.setLevel(logging.INFO)
 from pypinyin import pinyin
 import pypinyin
 
