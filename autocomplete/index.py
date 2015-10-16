@@ -42,7 +42,6 @@ class Autocomplete (object):
     """
     Create index for ITEM.
     """
-    item = str(item)
     self.sanity_check (item)
     self.r.hset (self.database, item.get('uid'), simplejson.dumps(item))
     for prefix in self.prefixs_for_term (item['term']):
