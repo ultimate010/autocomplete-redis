@@ -42,6 +42,7 @@ class Autocomplete (object):
     """
     Create index for ITEM.
     """
+    item = str(item)
     self.sanity_check (item)
     self.r.hset (self.database, item.get('uid'), simplejson.dumps(item))
     for prefix in self.prefixs_for_term (item['term']):
@@ -97,6 +98,7 @@ class Autocomplete (object):
                      in jieba.cut(prefix.lower()) if token != " "]))
 
   def search_query (self,prefix):
+    prefix = str(prefix)
     search_strings = self.normalize (prefix)
 
     if not search_strings: return []
