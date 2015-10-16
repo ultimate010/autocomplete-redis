@@ -97,7 +97,8 @@ class Autocomplete (object):
                      in jieba.cut(prefix.lower()) if token != " "]))
 
   def search_query (self,prefix):
-    prefix = str(prefix)
+    if not isinstance(prefix, unicode):
+        prefix = unicode(prefix)
     search_strings = self.normalize (prefix)
 
     if not search_strings: return []
