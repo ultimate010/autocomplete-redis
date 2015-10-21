@@ -74,7 +74,7 @@ class Autocomplete (object):
     for i in xrange(1, len(term) + 1):
       word = term[:i]
       prefixs.append(word)
-      prefixs.append(''.join([i[0] for i in pinyin(word, style=pypinyin.INITIALS)]).lower())
+      prefixs.append(''.join([i[0] for i in pinyin(word, style=pypinyin.FIRST_LETTER)]).lower())
       prefixs.append(''.join([i[0] for i in pinyin(word, style=pypinyin.NORMAL)]).lower())
       prefixs.append(word)
 
